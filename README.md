@@ -22,6 +22,7 @@ $ docker exec -it {docker_redis_cotainer_id} redis-cli
 
 ```
 # docker compose로 db table 설정 및 redis 까지 한번에 container 실행 
+$ docker-compose up -d
 ```
 
 # 요청이 동시에 들어올 경우
