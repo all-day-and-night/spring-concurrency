@@ -1,0 +1,27 @@
+version: '3'
+services:
+  mysql:
+    image: mysql
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=1234
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+
+  db_creator:
+    image: mysql
+    command: >
+      bash -c "sleep 10 &&
+      mysql -u root -p 1234 -e 'CREATE DATABASE stock_example;'"
+    depends_on:
+      - mysql
+
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - ./redis-data:/data
