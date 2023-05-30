@@ -4,19 +4,24 @@
 # start
 
 ```
+# for mysql
 $ docker pull mysql
-
 $ docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=1234 --name mysql mysql
-
 $ docker exec -it mysql bash
-
 $ mysql -u root -p
-
 $ create database stock_example
-
 $ use stock_example
 
+# for redis
+$ docker pull redis
+$ docker run -d -p 6379:6379 --name myredis redis
+$ docker exec -it {docker_redis_cotainer_id} redis-cli
+
 # start spring project
+```
+
+```
+# docker compose로 db table 설정 및 redis 까지 한번에 container 실행 
 ```
 
 # 요청이 동시에 들어올 경우
@@ -61,11 +66,22 @@ $ use stock_example
 1. lettuce
 > setnx 명령어를 활용하여 분산 락 구현
 > spin lock 방식
-> retry logic 구현
+> retry logic 구현 필요
+> spin lock 방식이므로 자원을 계속해서 소모하기 때문에 sleep과 같은 텀을 두어 재시도하는 로직 구현 필요 
 
 2. redisson
 > Pub-Sub 기반으로 Lock 구현 제공 
+> 별도의 Lock 관련 class 제공
 
+```
+# 실행한 docker container에 접속 terminal 2개(pub/sub)
+$ docker exec -it {docker_redis_cotainer_id} redis-cli
+$ subscribe {channel_name} 
+$ publish {channel_name} {message}
+```
+3. 실무에서는..?
+> 재시도가 필요하지 않은 경우 lock은 lettuce
+> 재시도가 필요한 경우 redisson 사용 
 
 # Facade pattern
 
