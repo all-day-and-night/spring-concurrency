@@ -7,13 +7,13 @@ import java.time.Duration;
 
 @Component
 @RequiredArgsConstructor
-public class RedisLockRespository {
+public class RedisLockRepository {
     private final RedisTemplate<String, String> redisTemplate;
 
     public Boolean lock(Long key){
         return redisTemplate
                 .opsForValue()
-                .setIfAbsent(generateKey(key), "lock", Duration.ofMillis(3_000));
+                .setIfAbsent(generateKey(key), "lock", Duration.ofMillis(3000));
     }
 
     public Boolean unlock(Long key){
